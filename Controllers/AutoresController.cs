@@ -14,7 +14,10 @@ namespace ProjetoLivrariaVS2019.Controllers
         [HttpGet]
         public IEnumerable<Autor> Get()
         {
-            return new List<Autor>();
+            return  new List<Autor>()
+            {
+                new Autor { Ativo = true, DataNascimento = new DateTime(1980, 05, 24), Id = 1, Nome = "Maria" }
+            };
         }
 
 
