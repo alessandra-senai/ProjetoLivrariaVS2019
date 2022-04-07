@@ -7,7 +7,7 @@ namespace ProjetoLivrariaVS2019.Controllers
 {
     [ApiController]
     [ApiVersion("1.0", Deprecated = true)]
-    [Route("api/v{version:apiVersion}/autores")]
+    [Route("api/autores")]
     public class AutoresController : ControllerBase
     {
 

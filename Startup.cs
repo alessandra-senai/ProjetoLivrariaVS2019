@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace ProjetoLivrariaVS2019
 {
@@ -23,11 +24,17 @@ namespace ProjetoLivrariaVS2019
 
             services.AddControllers();
 
-            services.AddApiVersioning(
-               options =>
-               {
-                  options.ReportApiVersions = true;
-               });
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(2, 0);
+                o.ReportApiVersions = true;
+                o.ApiVersionReader = ApiVersionReader.Combine(
+                   new QueryStringApiVersionReader("api-version"),
+                    new HeaderApiVersionReader("X-Version"),
+                    new MediaTypeApiVersionReader("ver")
+                    );
+            });
             services.AddVersionedApiExplorer(
                options =>
                {
