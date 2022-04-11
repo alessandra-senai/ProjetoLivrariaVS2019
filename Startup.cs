@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using ProjetoLivrariaVS2019.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoLivrariaVS2019
 {
@@ -19,7 +21,7 @@ namespace ProjetoLivrariaVS2019
 
         public IConfiguration Configuration { get; }
 
-         public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
@@ -38,14 +40,22 @@ namespace ProjetoLivrariaVS2019
             services.AddVersionedApiExplorer(
                options =>
                {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
+                   options.GroupNameFormat = "'v'VVV";
+                   options.SubstituteApiVersionInUrl = true;
                });
 
 
             services.AddSwaggerGen();
 
             services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigureOptions>();
+
+            services.AddDbContext<LivrariaContext>(options =>
+                     options.UseSqlServer(Configuration.GetConnectionString("ServerConnection")));
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
